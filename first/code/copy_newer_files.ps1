@@ -10,6 +10,9 @@ $copyToList = @(
     "C:\Users\Kazuk\Documents\GitHub\powerShell-dataAnalysis\first\data\raw_copy\div3"
 )
 
+$dateTimeStart = 2
+$dateTimeLength = 4
+
 Function copy_newer_items ($pathResultOkSrc, $pathResultOkDest){
 
     #Get month list in source and Dest
@@ -29,19 +32,19 @@ Function copy_newer_items ($pathResultOkSrc, $pathResultOkDest){
         $fileListDest = Get-ChildItem -Path "$($pathResultOkDest)\$latestMonthName"
         $fileListDestInt = @()
         foreach ($file in $fileListDest) {
-            $fileListDestInt += $file.Name -replace "[^0-9]" , ''
+            $fileListDestInt += $file.Name.Substring($dateTimeStart,$dateTimeLength) -replace "[^0-9]" , ''
         }
         $latestFileName = $fileListDestInt | measure -Maximum
         $latestFileName = $latestFileName.Maximum
 
         #Copy newer files
         foreach($fileSrc in $fileListSrc){
-            $currentFileName = $fileSrc.Name -replace "[^0-9]" , ''
+            $currentFileName = $fileSrc.Name.Substring($dateTimeStart,$dateTimeLength) -replace "[^0-9]" , ''
             if($latestFileName -gt $currentFileName){
                 continue
             }
             Copy-Item -Path $fileSrc.FullName -Destination $latestMonthDir
-            write("Copying...  $latestMonthName\$fileSrc")
+            write("Copying...  $($latestMonthName)\$($fileSrc) @ '$($currentFileName)'")
         }
 
         #Copy every file in newer month dir

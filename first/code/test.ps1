@@ -2,10 +2,12 @@
 
 $pathRawData = "$($PSScriptRoot)\..\data\raw"
 
-draw("$($PSScriptRoot)\..\data\firstGraph.png")
+#draw("$($PSScriptRoot)\..\data\firstGraph.png")
 
-1..20 | foreach {
-    New-Item -Path "$($pathRawData)\$_.txt" -Value $_ -Force
+foreach($pn in 1..3){
+    foreach($date in 10..30) {
+        New-Item -Path "$($pathRawData)\div4\2210\$($pn)-$($date)-1.txt" -Value $_ -Force
+    }
 }
 
 Read-Host -Prompt "Press Enter to Exit"
